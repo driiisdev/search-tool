@@ -1,5 +1,13 @@
-const authenticationRoutes = require("./auth")
-const userRoutes = require("./user")
+const express = require('express');
+const authenticationRoutes = require("./auth");
 
+const router = express.Router();
 
-module.exports = [authenticationRoutes, userRoutes]
+router.get('/', (req, res) => {
+  res.status(200).json({ message: 'API is healthy!' });
+});
+
+// Mount authentication routes
+router.use("/api/v1", authenticationRoutes);
+
+module.exports = router;

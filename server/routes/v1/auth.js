@@ -1,33 +1,23 @@
 const passport = require('passport');
 const express = require('express');
-const app = express();
+const router = express.Router();
+const User = require('../../models/User');
 
-module.exports = app => {
-    app.get('/auth/google', passport.authenticate('google', {
-        scope: ['profile', 'email']
-    })
-    );
+router.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email'],
+}));
 
-    app.get('/auth/google/callback', passport.authenticate('google'),(req,res)=>{
-        res.redirect('/profile');
-    });
+router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
+    console.log(req.user);
+    if (req.user) {
+        res.json({
+            facebookId: req.user.facebookId,
+            email: req.user.email,
+            name: req.user.name
+        });
+    } else {
+        res.status(401).json({ message: 'Facebook authentication failed' });
+    }
+});
 
-    app.get('/api/logout', (req, res) => {
-        req.logout();
-        res.redirect('/');
-    });
-
-    app.get('/api/current_user', (req, res) => {
-        res.send(req.user);
-    });
-
-    app.get('/auth/facebook', passport.authenticate('facebook', {
-        profileFields: ['id', 'name'],
-    })
-    );
-
-    app.get('/auth/facebook/callback', passport.authenticate('facebook'),(req,res)=>{
-        res.redirect('/profile');
-    });
-
-};
+module.exports = router;

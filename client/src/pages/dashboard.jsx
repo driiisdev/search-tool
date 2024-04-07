@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import SearchForm from '../components/searchForm';
 import GroupList from '../components/groupList';
-import Map from './Map';
+// import Map from '../components/map';
 
 function Home() {
   const [groups, setGroups] = useState([]);
@@ -21,7 +21,7 @@ function Home() {
       <h1>Facebook Group Search Tool</h1>
       <SearchForm onSearch={searchGroups} />
       <GroupList groups={groups} />
-      <Map groups={groups} />
+      {/* <Map groups={groups} /> */}
     </div>
   );
 }

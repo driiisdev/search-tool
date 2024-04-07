@@ -1,18 +1,28 @@
-import { Component } from 'react';
-import Login from './components/login';
-import Profile from './components/profile';
-import {BrowserRouter,Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './middleware/authContext';
+// import isAuthenticated from './middleware/isAuthenticated';
+import LoginPage from './pages/login';
+import BoardPage from './pages/dashboard';
+import ProtectedRoute from './routes/protectedRoute';
 
-const App =()=> {
+function App() {
   return (
-    <div className="App">
+    <AuthProvider>
       <BrowserRouter>
-        <div>
-          <Route exact path='/login' Component={Login} />
-          <Route exact path='/profile' Component={Profile} />
-        </div>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard" element={<ProtectedRoute />}>
+              <Route index element={<BoardPage />} />
+            </Route>
+            {/* <Route
+              path="/"
+              element={
+                isAuthenticated() ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+              }
+            /> */}
+        </Routes>
       </BrowserRouter>
-    </div>
+    </AuthProvider>
   );
 }
 
