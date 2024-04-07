@@ -3,11 +3,10 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 
-require('./models/User.js');
-require('./utils/passport.js');
-
 const connectDB = require('./config/db');
 connectDB();
+
+require('./utils/passport.js');
 
 const app = express();
 

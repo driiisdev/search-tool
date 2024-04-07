@@ -7,4 +7,4 @@ const userSchema = new Schema({
   facebookId: { type: String, unique:true, required: true, trim: true }, // Added trim to remove leading/trailing spaces
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('User', userSchema);
