@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 const connectDB = require('./config/db');
 connectDB();
@@ -12,9 +13,8 @@ const app = express();
 
 app.use(cors({
     origin: 'http://localhost:5173',
-    Credential: true
-    }
-));
+    credentials: true
+}));
 
 app.use(session({
     secret: 'YOUR_SECRET_IS _OUT',
