@@ -1,13 +1,12 @@
-import { createContext, useContext } from 'react';
+import { useState, createContext, useContext } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Add your authentication logic here
-  const user = null; // Placeholder for user authentication state
+  const [user, setUser] = useState(null);
 
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

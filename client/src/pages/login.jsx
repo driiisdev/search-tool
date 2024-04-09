@@ -1,15 +1,21 @@
 import { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
+
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
 
   const handleFacebookLogin = async () => {
     setIsLoading(true);
     setError(null); // Clear any previous errors
 
+
     try {
       window.location.href = 'http://localhost:8000/api/v1/auth/facebook';
+
     } catch (error) {
       console.error('Login failed:', error);
       setError('An error occurred during login. Please try again.');
@@ -17,6 +23,7 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div>

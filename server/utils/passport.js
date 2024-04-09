@@ -1,6 +1,14 @@
 require('dotenv').config();
 const passport = require('passport');
+
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const FacebookStrategy = require('passport-facebook').Strategy;
+
+const options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'), // Extract token from Authorization header
+  secretOrKey: process.env.JWT_SECRET, // Use the same JWT secret used for token generation
+};
 
 const User = require('../models/user');
 
@@ -60,4 +68,19 @@ passport.use(
       }
     }
   )
+);
+
+passport.use(
+  new JwtStrategy(options, async (payload, done) => {
+    try {
+      const user = await User.findById(payload.userId);
+      if (user) {
+        done(null, user); // Successful authentication with user object
+      } else {
+        done(null, false); // No user found for the token
+      }
+    } catch (err) {
+      done(err); // Error during user retrieval
+    }
+  })
 );
