@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route
-            path="/dashboard/*"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <AuthCheck>
@@ -25,7 +25,7 @@ function App() {
             path="/"
             element={
               <AuthCheck>
-                <Navigate to="/dashboard" replace />
+                <Navigate to={user ? "/dashboard" : "/login"} replace />
               </AuthCheck>
             }
           />
