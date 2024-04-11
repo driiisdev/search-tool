@@ -3,6 +3,7 @@ const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto'); // For generating random token
 
 router.get("/auth/facebook",
   passport.authenticate("facebook", {
@@ -12,18 +13,24 @@ router.get("/auth/facebook",
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
   if (req.user) {
-    console.log('got here');
     const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    console.log('got token');
-    // Set token in Authorization header with 'Bearer' prefix
-    res.setHeader('Authorization', `Bearer ${token}`);
-    // const redirectUrl = `http://localhost:5173/dashboard?token=${token}`; // Add token to redirect URL
-    res.cookie('jwtToken', token, { httpOnly: true, secure: false }); // Secure cookie
-    res.redirect('http://localhost:5173/dashboard'); // Redirect to the frontend with token
-    console.log(req.user);
+    const authToken = generateRandomToken();
+    res.json({ message: 'Authentication successful', token, customAuthToken: authToken });
+    console.log('got ');
+    res.redirect('/auth/redirect')
+    console.log('did this');
   } else {
     res.status(401).json({ message: 'Facebook authentication failed' });
   }
 });
+
+function generateRandomToken() {
+  return crypto.randomBytes(32).toString('hex'); // Replace 32 with desired token length
+}
+
+router.get('/auth/redirect', (req, res) => {
+  res.redirect('http://localhost:5173/dashboard');
+});
+
 
 module.exports = router;
