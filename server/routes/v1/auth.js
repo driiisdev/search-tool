@@ -18,7 +18,6 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, r
     res.cookie('token', token, { httpOnly: true, secure: false, maxAge: 360000 }); // 6 minute
     res.cookie('authToken', authToken, { httpOnly: true, secure: false, maxAge: 360000 });
     res.redirect('http://localhost:5173/dashboard')
-    console.log('did this');
   } else {
     res.status(401).json({ message: 'Facebook authentication failed' });
   }

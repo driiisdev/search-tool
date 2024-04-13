@@ -25,7 +25,7 @@ function App() {
             path="/"
             element={
               <AuthCheck>
-                <Navigate to={user ? "/dashboard" : "/login"} replace />
+                <Navigate to="/dashboard" replace />
               </AuthCheck>
             }
           />

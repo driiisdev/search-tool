@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../middleware/authContext';
 
 const ProtectedRoute = ({ children }) => {
   const { user, setUser } = useAuth();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
 
   const verifyAuthentication = async () => {
     try {
@@ -17,9 +14,6 @@ const ProtectedRoute = ({ children }) => {
     } catch (error) {
       console.error('Error verifying authentication:', error);
       setUser(null);
-      navigate('/login', { replace: true });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -27,11 +21,7 @@ const ProtectedRoute = ({ children }) => {
     verifyAuthentication();
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return user ? children : <Navigate to="/login" replace />;
+  return user ? children : null;
 };
 
 export default ProtectedRoute;
