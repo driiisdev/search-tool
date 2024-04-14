@@ -5,24 +5,20 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const storeUser = (userData) => {
-    sessionStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
-  };
-
-  const retrieveUser = () => {
-    // const storedUser = sessionStorage.getItem('user');
+  const retrieveUserFromSessionStorage = () => {
+    const storedUser = sessionStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      setUser(storedUser);
+      console.log(user);
     }
   };
 
   useEffect(() => {
-    retrieveUser();
+    retrieveUserFromSessionStorage();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser: storeUserInSessionStorage }}>
+    <AuthContext.Provider value={{ user }}>
       {children}
     </AuthContext.Provider>
   );
